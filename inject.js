@@ -1,30 +1,17 @@
-var TARGET_INPUT = 'quick-search-query';
+var TARGET_INPUT = 'search-text';
 
 var workTimeComponent;
 
 (function () {
     var quickSearchQuery = document.getElementById(TARGET_INPUT);
-    // quickSearchQuery.onfocus = function(){
-        
-    // }
+    quickSearchQuery.onfocus = onFocusWorkTime;
+    quickSearchQuery.los = onBlurWorkTime;
 
-    // quickSearchQuery.los = function(){
-        
-    // }
-
-    // //Строим необходимые селекты
-    // var selectWeek = buildSelect('Недели', 'crcWeek', 9, 1);
-    // var selectDay = buildSelect('Дни', 'crcDay', 4, 1);
-    // var selectHour = buildSelect('Часы', 'crcHour', 9, 1);
-    // var selectMinute = buildSelect('Минуты', 'crcMinute', 5, 10);
-
-    // //Компонуем итоговый блок с селектами
-    // const wrapper = '<div id="crcWorkTime" style="background-color:white; position:absolute;  margin:-7px 0 0 169px; padding: 0 3px 3px 3px; z-index:9999; border-radius:3px; box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.48);">' + selectWeek + selectDay + selectHour + selectMinute + '</div>';
     var wrapper = getWorkTimeComponent();
 
     var parentDiv = quickSearchQuery.parentNode;
     var wrapperElement = document.createElement('div');
-    wrapperElement.innerHTML = wrapper;
+    wrapperElement.innerHTML = wrapper.getHtml();
 
     parentDiv.insertBefore(wrapperElement, quickSearchQuery);
 
@@ -33,6 +20,14 @@ var workTimeComponent;
     });
 
 })();
+
+function onFocusWorkTime(){
+    
+}
+
+function onBlurWorkTime(){
+    
+}
 
 function getWorkTimeComponent(){
     if(!workTimeComponent){
@@ -43,13 +38,11 @@ function getWorkTimeComponent(){
 
 function createWorkTimeComponent(){
     //Строим необходимые селекты
-    var selectWeek = buildSelect('Недели', 'crcWeek', 9, 1);
-    var selectDay = buildSelect('Дни', 'crcDay', 4, 1);
-    var selectHour = buildSelect('Часы', 'crcHour', 9, 1);
-    var selectMinute = buildSelect('Минуты', 'crcMinute', 5, 10);
-
-    //Компонуем итоговый блок с селектами
-    const wrapper = '<div id="crcWorkTime" style="background-color:white; position:absolute;  margin:-7px 0 0 169px; padding: 0 3px 3px 3px; z-index:9999; border-radius:3px; box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.48);">' + selectWeek + selectDay + selectHour + selectMinute + '</div>';
+    var selectWeek = new SelectComponent('Недели', 'crcWeek', 4, 1);
+    var selectDay =  new SelectComponent('Дни', 'crcDay', 6, 1);
+    var selectHour =  new SelectComponent('Часы', 'crcHour', 23, 1);
+    var selectMinute =  new SelectComponent('Минуты', 'crcMinute', 5, 10);
+    const wrapper = new WorkTimeComponent(selectWeek, selectDay, selectHour, selectMinute);
     
     return wrapper;
 }
@@ -80,11 +73,7 @@ function onChangeSelectorHandler(event) {
  * @return div - блок со всем добром
  */
 function buildSelect(title, id, range, multiply) {
-    var select = '<div style="height:100%; margin: 0 5px; float:left; display:inline-block;"><label style="font-size:9pt; ">' + title + '</label><br><select style="width:100%; border: 1px solid #ccc; border-radius:3px; cursor:pointer;" id="' + id + '" class="crc-work-select">';
-    for (var i = 0; i <= range; i++) {
-        select = select + '<option>' + i * multiply + '</option>';
-    }
-    return select + '</select></div>';
+    return new SelectComponent(title, id, range, multiply);
 }
 
 /**
@@ -97,4 +86,38 @@ function addSelectValueSuffix(selectValue, suffix) {
         selectValue += suffix;
     }
     return selectValue;
+}
+
+/**
+ * Класс - div - блок с селектом по заданным параметрам.
+ * @param title    - заголовок
+ * @param id       - уникальный id
+ * @param range    - ограничение значений сверху
+ * @param multiply - множитель значений
+ * @return div - блок со всем добром
+ */
+function SelectComponent(title, id, range, multiply) {
+    this.getHtml = function () {
+        var select = '<div class="crc-work-select-container">'
+            + ' <label>' + title + '</label>'
+            + ' <br>'
+            + ' <select id="' + id + '" class="crc-work-select">';
+        for (var i = 0; i <= range; i++) {
+            select = select + '<option>' + i * multiply + '</option>';
+        }
+        return select + '</select></div>';
+    }
+}
+
+function WorkTimeComponent(selectWeek, selectDay, selectHour, selectMinute) {
+    this.getHtml = function () {
+        //Компонуем итоговый блок с селектами
+        const wrapper = '<div id="crcWorkTime">'
+            + selectWeek.getHtml()
+            + selectDay.getHtml()
+            + selectHour.getHtml()
+            + selectMinute.getHtml()
+            + '</div>';
+        return wrapper;
+    }
 }
