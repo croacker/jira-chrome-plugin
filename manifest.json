@@ -1,10 +1,21 @@
 {
-  "name": "Croc JIRA plugin",
-  "description": "Upgrade UI",
+  "name": "Injecta",
   "version": "0.0.1",
-  "permissions": ["activeTab"],
+  "manifest_version": 2,
+  "description": "Injecting stuff",
+  "homepage_url": "http://danharper.me",
   "background": {
-    "scripts": ["plugin.js"]
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
   },
-  "manifest_version": 2
+  "browser_action": {
+    "default_title": "Inject!"
+  },
+  "permissions": [
+    "https://*/*",
+    "http://*/*",
+    "tabs"
+  ]
 }
