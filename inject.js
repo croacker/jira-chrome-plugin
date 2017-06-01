@@ -110,6 +110,12 @@ function SelectComponent(title, id, range, multiply) {
 }
 
 function WorkTimeComponent(selectWeek, selectDay, selectHour, selectMinute) {
+    var me = this;
+    this.weekComponent = selectWeek;
+    this.dayComponent = selectDay;
+    this.hourComponent = selectHour;
+    this.minuteComponent = selectMinute;
+
     this.getHtml = function () {
         //Компонуем итоговый блок с селектами
         const wrapper = '<div id="crcWorkTime">'
@@ -119,5 +125,11 @@ function WorkTimeComponent(selectWeek, selectDay, selectHour, selectMinute) {
             + selectMinute.getHtml()
             + '</div>';
         return wrapper;
+    }
+
+    this.getElement = function(){
+        var element = document.createElement('div');
+        element.innerHTML = me.getHtml();
+        return element;
     }
 }
