@@ -21,9 +21,10 @@ var workTimeComponent;
 
     var init = function () {
         var target = document.getElementById(TARGET_INPUT);
-        target.onfocus = onFocusWorkTime;
-        target.onclick = onFocusWorkTime;
-        return target;
+        if (target) {
+            target.onfocus = onFocusWorkTime;
+            target.onclick = onFocusWorkTime;
+        }
     }
 
     init();
@@ -91,7 +92,7 @@ function WorkTimeComponent(target) {
         return wrapper;
     }
 
-    this.getElement = function(){
+    this.getElement = function () {
         var element = document.createElement('div');
         element.innerHTML = me.getHtml();
         return element;
