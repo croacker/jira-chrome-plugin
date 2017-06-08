@@ -1,1 +1,2 @@
-"Jira chrome dattime work input plugin" 
+#Jira Chrome plugin
+Jira chrome dattime work input plugin
