@@ -1,3 +1,3 @@
 # Jira Chrome plugin
 
-Jira chrome dattime work input plugin
+Плагин для Google Chrome, для замены элементов управления отвечающих за указание времени в Jira.
